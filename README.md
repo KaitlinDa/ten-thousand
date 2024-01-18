@@ -1,13 +1,13 @@
-# Lab 06 - Class 401d24
+# Lab 07 - Class 401d24
 
 ## Project
-Ten Thousand - Version 1
+Ten Thousand - Version 2
 
 ## Author
 Kaitlin Davis | January 2024
 
 ## About
-This repository contains the GameLogic class, an essential component of a dice game made with using help from an AI (ChatGPT). The class provides methods for rolling dice and calculating scores based on the outcomes of the rolls. It is designed to handle various scenarios in dice gaming, such as scoring straights, sets of similar dice, and individual dice values.
+Ten Thousand is a dice game designed as part of a coding lab to demonstrate proficiency in Python programming, particularly in handling complex game logic and user interactions. This project simulates the classic dice game often known as "Ten Thousand", where players roll dice to accumulate points, aiming to reach a score of ten thousand.
 
 ## Tests
 I used pytest for this assignment. 
