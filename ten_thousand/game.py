@@ -12,36 +12,51 @@ def play(roller=GameLogic.roll_dice):
     current_round = 1
     while True:
         print(f"Starting round {current_round}")
-        print("Rolling 6 dice...")
         dice = roller(6)
-        print(f"*** {' '.join(map(str, dice))} ***")
+        print(f"Rolling 6 dice...\n*** {' '.join(map(str, dice))} ***")
 
-        kept_dice = input("Enter dice to keep, or (q)uit:\n> ").strip().lower()
-        if kept_dice == 'q':
-            print(f"Thanks for playing. You earned {total_score} points")
-            break
+        round_score = 0  # Score for the current round
 
-        kept_dice = tuple(int(d) for d in kept_dice if d.isdigit())
-        num_kept_dice = len(kept_dice)
+        while True:
+            kept_dice_input = input("Enter dice to keep, or (q)uit:\n> ").strip().lower()
+            if kept_dice_input == 'q':
+                print(f"Thanks for playing. You earned {total_score} points")
+                return
 
-        score_for_kept_dice = GameLogic.calculate_score(kept_dice)
-        print(f"You have {score_for_kept_dice} unbanked points and {6 - num_kept_dice} dice remaining")
+            kept_dice = tuple(int(d) for d in kept_dice_input if d.isdigit())
+            if not GameLogic.validate_keepers(dice, kept_dice):
+                print("Cheater!!! Or possibly made a typo...")
+                print(f"*** {' '.join(map(str, dice))} ***")
+                continue
 
-        decision = input("(r)oll again, (b)ank your points or (q)uit:\n> ").strip().lower()
-        if decision == 'b':
-            total_score += score_for_kept_dice
-            print(f"You banked {score_for_kept_dice} points in round {current_round}")
-            print(f"Total score is {total_score} points")
-            current_round += 1
-        elif decision == 'q':
-            print(f"Thanks for playing. You earned {total_score} points")
-            break
-        elif decision == 'r':
-            # Handles the logic for re-rolling the dice
-            dice = roller(6 - num_kept_dice)
-        else:
-            print("Invalid choice. Please choose 'r' to roll again, 'b' to bank, or 'q' to quit.")
+            score_for_kept_dice = GameLogic.calculate_score(kept_dice)
+            if score_for_kept_dice == 0 and not kept_dice:
+                print("****************************************\n**        Zilch!!! Round over         **\n****************************************")
+                break
 
-# Runs script
+            round_score += score_for_kept_dice
+            remaining_dice = 6 - len(kept_dice)
+            print(f"You have {round_score} unbanked points and {remaining_dice} dice remaining")
+
+            decision = input("(r)oll again, (b)ank your points or (q)uit:\n> ").strip().lower()
+            if decision == 'b':
+                total_score += round_score
+                print(f"You banked {round_score} points in round {current_round}")
+                print(f"Total score is {total_score} points")
+                break
+            elif decision == 'r':
+                if remaining_dice == 0:  # Hot dice scenario
+                    print("Rolling 6 dice again...")
+                    dice = roller(6)
+                else:
+                    print(f"Rolling {remaining_dice} dice...")
+                    dice = roller(remaining_dice)
+                print(f"*** {' '.join(map(str, dice))} ***")
+                if GameLogic.calculate_score(dice) == 0:
+                    print("****************************************\n**        Zilch!!! Round over         **\n****************************************")
+                    break
+
+        current_round += 1
+
 if __name__ == "__main__":
     play()
