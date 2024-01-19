@@ -57,3 +57,31 @@ class GameLogic:
         """
         # Returns tuple of random integers between one and six simulating the rolling of dice
         return tuple(random.randint(1, 6) for _ in range(number))
+    
+    @staticmethod
+    def get_scorers(dice):
+        """
+        Returns a tuple of dice that can be scored.
+        """
+        if not dice:
+            return tuple()
+
+        counts = {x: dice.count(x) for x in set(dice)}
+        scoring_dice = []
+
+        for num, count in counts.items():
+            if num == 1 or num == 5:
+                scoring_dice.extend([num] * count)
+            elif count >= 3:
+                scoring_dice.extend([num] * count)
+
+        return tuple(scoring_dice)
+
+    @staticmethod
+    def validate_keepers(roll, keepers):
+        """
+        Validates whether keepers are a subset of roll.
+        """
+        roll_counts = {x: roll.count(x) for x in set(roll)}
+        keepers_counts = {x: keepers.count(x) for x in set(keepers)}
+        return all(keepers_counts.get(die, 0) <= roll_counts.get(die, 0) for die in keepers_counts)

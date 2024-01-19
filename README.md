@@ -1,7 +1,7 @@
-# Lab 07 - Class 401d24
+# Lab 08 - Class 401d24
 
 ## Project
-Ten Thousand - Version 2
+Ten Thousand - Version 3
 
 ## Author
 Kaitlin Davis | January 2024
